@@ -6,6 +6,7 @@ import revolut.backend.test.banking.TransferService;
 import revolut.backend.test.banking.impl.AccountServiceImpl;
 import revolut.backend.test.banking.impl.TransferServiceImpl;
 import revolut.backend.test.exceptions.AccountAlreadyBlocked;
+import revolut.backend.test.exceptions.AccountNotFoundException;
 import revolut.backend.test.exceptions.InsufficientFundsException;
 import revolut.backend.test.exceptions.TransactionErrorException;
 import revolut.backend.test.request.TransferRequest;
@@ -27,9 +28,9 @@ public class BankAPIControllerImpl implements BankAPIController {
     @Override
     public void createTransfer(RoutingContext context) {
         TransferRequest request = context.requestData().postBodyAs(TransferRequest.class);
-        Account payer = accountService.findAccount(request.getPayerId());
-        Account recipient = accountService.findAccount(request.getRecipientId());
         try {
+            Account payer = accountService.findAccount(request.getPayerId());
+            Account recipient = accountService.findAccount(request.getRecipientId());
             service.transfer(payer, recipient, request.getAmount());
             HttpUtils.writeOkResponse(context.channelContext());
         } catch (AccountAlreadyBlocked e) {
@@ -38,6 +39,8 @@ public class BankAPIControllerImpl implements BankAPIController {
             HttpUtils.writeBadRequest(context.channelContext(), APIResponseCode.INSUFFICIENT_FUNDS);
         } catch (TransactionErrorException e) {
             HttpUtils.writeInternalServerError(context.channelContext(), APIResponseCode.TRANSACTION_ERROR);
+        } catch (AccountNotFoundException e) {
+            HttpUtils.writeNotFoundResponse(context.channelContext(), APIResponseCode.NO_ACCOUNT);
         }
 
     }
@@ -51,12 +54,11 @@ public class BankAPIControllerImpl implements BankAPIController {
     @Override
     public void getAccount(RoutingContext context) {
         Long accountId = Long.valueOf(context.requestData().param("accountId"));
-        Account account = accountService.findAccount(accountId);
-        if (account != null) {
+        try {
+            Account account = accountService.findAccount(accountId);
             HttpUtils.writeOkResponse(context.channelContext(), BaseResponse.create(account));
-        } else {
+        } catch (AccountNotFoundException e) {
             HttpUtils.writeNotFoundResponse(context.channelContext(), APIResponseCode.NO_ACCOUNT);
         }
-
     }
 }

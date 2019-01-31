@@ -37,8 +37,8 @@ public class TransferServiceTest {
     @Test(expectedExceptions = InsufficientFundsException.class)
     void naiveTest() throws AccountAlreadyBlocked, InsufficientFundsException, TransactionErrorException {
         TransferServiceImpl bank = new TransferServiceImpl();
-        Account crc = new AccountImpl(1L, "A", 100);
-        Account dst = new AccountImpl(2L, "B", 50);
+        Account crc = new AccountImpl(1L, "A", 100L);
+        Account dst = new AccountImpl(2L, "B", 50L);
         bank.transfer(crc, dst, 10);
         assertEquals(crc.balance(), 90L);
         assertEquals(dst.balance(), 60);
@@ -50,7 +50,7 @@ public class TransferServiceTest {
         TransferServiceImpl bank = new TransferServiceImpl();
         ArrayList<Account> accounts = new ArrayList<>();
         for (long i = 0; i < MAX_ACCOUNT; i++) {
-            accounts.add(new AccountImpl(i, "TEST", 100));
+            accounts.add(new AccountImpl(i, "TEST", 100L));
         }
         long startBalance = getTotalBalance(accounts);
         for (int i = 0; i < TRANSACTIONS; i++) {
@@ -73,7 +73,7 @@ public class TransferServiceTest {
         TransferServiceImpl bank = new TransferServiceImpl();
         ArrayList<Account> accounts = new ArrayList<>();
         for (long i = 0; i < MAX_ACCOUNT; i++) {
-            accounts.add(new AccountImpl(i, "TEST", 100));
+            accounts.add(new AccountImpl(i, "TEST", 100L));
         }
         long startBalance = getTotalBalance(accounts);
         ExecutorService executor = Executors.newFixedThreadPool(N_THREADS);

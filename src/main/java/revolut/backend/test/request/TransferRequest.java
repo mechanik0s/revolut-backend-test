@@ -11,6 +11,15 @@ public class TransferRequest {
     @JsonProperty(required = true)
     private Long amount;
 
+    public TransferRequest() {
+    }
+
+    public TransferRequest(Long payerId, Long recipientId, Long amount) {
+        this.payerId = payerId;
+        this.recipientId = recipientId;
+        this.amount = amount;
+    }
+
     public Long getPayerId() {
         return payerId;
     }

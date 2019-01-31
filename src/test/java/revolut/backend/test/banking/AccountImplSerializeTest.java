@@ -12,7 +12,7 @@ public class AccountImplSerializeTest {
     @Test
     void serializeTest() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        Account account = new AccountImpl(101L, "TEST ACC", 10);
+        Account account = new AccountImpl(101L, "TEST ACC", 10L);
         assertEquals(mapper.writeValueAsString(account), "{\"accountId\":101,\"accountName\":\"TEST ACC\",\"balance\":10}");
     }
 }

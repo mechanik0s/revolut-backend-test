@@ -15,7 +15,7 @@ public class AccountImpl implements Account {
 
 
     @JsonCreator
-    public AccountImpl(@JsonProperty("accountId") Long accountId, @JsonProperty("accountName") String accountName, @JsonProperty("balance") long balance) {
+    public AccountImpl(@JsonProperty("accountId") Long accountId, @JsonProperty("accountName") String accountName, @JsonProperty("balance") Long balance) {
         this.accountId = accountId;
         this.accountName = accountName;
         this.balance = balance;

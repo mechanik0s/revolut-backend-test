@@ -1,5 +1,6 @@
 package revolut.backend.test.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -18,6 +19,11 @@ public class BaseResponse<T> {
     private T payload;
 
     private BaseResponse() {
+    }
+
+    @JsonCreator
+    public BaseResponse(@JsonProperty("code") Integer code, @JsonProperty("message") String message) {
+        this.apiResponseCode = APIResponseCode.get(code);
     }
 
     private BaseResponse(APIResponseCode apiResponseCode) {
