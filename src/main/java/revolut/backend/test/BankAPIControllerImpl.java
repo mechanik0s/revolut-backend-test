@@ -5,10 +5,7 @@ import revolut.backend.test.banking.AccountService;
 import revolut.backend.test.banking.TransferService;
 import revolut.backend.test.banking.impl.AccountServiceImpl;
 import revolut.backend.test.banking.impl.TransferServiceImpl;
-import revolut.backend.test.exceptions.AccountAlreadyBlocked;
-import revolut.backend.test.exceptions.AccountNotFoundException;
-import revolut.backend.test.exceptions.InsufficientFundsException;
-import revolut.backend.test.exceptions.TransactionErrorException;
+import revolut.backend.test.exceptions.*;
 import revolut.backend.test.request.TransferRequest;
 import revolut.backend.test.response.APIResponseCode;
 import revolut.backend.test.response.BaseResponse;
@@ -33,14 +30,19 @@ public class BankAPIControllerImpl implements BankAPIController {
             Account recipient = accountService.findAccount(request.getRecipientId());
             service.transfer(payer, recipient, request.getAmount());
             HttpUtils.writeOkResponse(context.channelContext());
-        } catch (AccountAlreadyBlocked e) {
-            HttpUtils.writeForbidden(context.channelContext(), APIResponseCode.ACCOUNT_ALREADY_BLOCKED);
-        } catch (InsufficientFundsException e) {
-            HttpUtils.writeBadRequest(context.channelContext(), APIResponseCode.INSUFFICIENT_FUNDS);
+        } catch (TransferException e) {
+            if (e instanceof AccountAlreadyBlocked) {
+                HttpUtils.writeForbidden(context.channelContext(), APIResponseCode.ACCOUNT_ALREADY_BLOCKED);
+            } else if (e instanceof InsufficientFundsException) {
+                HttpUtils.writeBadRequest(context.channelContext(), APIResponseCode.INSUFFICIENT_FUNDS);
+            } else {
+                HttpUtils.writeInternalServerError(context.channelContext());
+            }
         } catch (TransactionErrorException e) {
             HttpUtils.writeInternalServerError(context.channelContext(), APIResponseCode.TRANSACTION_ERROR);
         } catch (AccountNotFoundException e) {
             HttpUtils.writeNotFoundResponse(context.channelContext(), APIResponseCode.NO_ACCOUNT);
+
         }
 
     }

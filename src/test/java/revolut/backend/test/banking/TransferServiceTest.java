@@ -3,9 +3,9 @@ package revolut.backend.test.banking;
 import org.testng.annotations.Test;
 import revolut.backend.test.banking.impl.AccountImpl;
 import revolut.backend.test.banking.impl.TransferServiceImpl;
-import revolut.backend.test.exceptions.AccountAlreadyBlocked;
 import revolut.backend.test.exceptions.InsufficientFundsException;
 import revolut.backend.test.exceptions.TransactionErrorException;
+import revolut.backend.test.exceptions.TransferException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class TransferServiceTest {
     }
 
     @Test(expectedExceptions = InsufficientFundsException.class)
-    void naiveTest() throws AccountAlreadyBlocked, InsufficientFundsException, TransactionErrorException {
+    void naiveTest() throws TransferException, TransactionErrorException {
         TransferServiceImpl bank = new TransferServiceImpl();
         Account crc = new AccountImpl(1L, "A", 100L);
         Account dst = new AccountImpl(2L, "B", 50L);
@@ -61,8 +61,8 @@ public class TransferServiceTest {
             if (amount == 0) continue;
             try {
                 bank.transfer(accounts.get(fromAccount), accounts.get(toAccount), amount);
-            } catch (Exception e) {
-                System.out.println(e);
+            } catch (TransactionErrorException | TransferException e) {
+                e.printStackTrace();
             }
         }
         assertEquals(getTotalBalance(accounts), startBalance);
@@ -86,8 +86,8 @@ public class TransferServiceTest {
             executor.submit(() -> {
                 try {
                     bank.transfer(accounts.get(from), accounts.get(to), amount);
-                } catch (AccountAlreadyBlocked | InsufficientFundsException | TransactionErrorException e) {
-                    System.out.println(e);
+                } catch (TransferException | TransactionErrorException e) {
+                    e.printStackTrace();
                 }
             });
         }

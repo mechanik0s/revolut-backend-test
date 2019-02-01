@@ -7,6 +7,7 @@ import revolut.backend.test.banking.TransferService;
 import revolut.backend.test.exceptions.AccountAlreadyBlocked;
 import revolut.backend.test.exceptions.InsufficientFundsException;
 import revolut.backend.test.exceptions.TransactionErrorException;
+import revolut.backend.test.exceptions.TransferException;
 
 public class TransferServiceImpl implements TransferService {
     private final Logger logger;
@@ -26,7 +27,7 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     public void transfer(Account from, Account to, long amount)
-            throws AccountAlreadyBlocked, InsufficientFundsException, TransactionErrorException {
+            throws TransferException, TransactionErrorException {
 
         if (from == null || to == null)
             throw new IllegalArgumentException();

@@ -1,4 +1,4 @@
 package revolut.backend.test.exceptions;
 
-public class InsufficientFundsException extends Exception {
+public class InsufficientFundsException extends TransferException {
 }

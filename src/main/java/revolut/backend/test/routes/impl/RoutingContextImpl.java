@@ -22,7 +22,7 @@ public class RoutingContextImpl implements RoutingContext {
         QueryStringDecoder uriDecoder = new QueryStringDecoder(httpRequest.uri(), CharsetUtil.UTF_8);
         this.path = uriDecoder.path();
         this.rawURI = uriDecoder.uri();
-        // some magic, cause netty use direct memory allocation for own buffers
+        // some magic, because netty uses direct memory allocation for own buffers
         byte[] bytes;
         ByteBuf byteBuf = httpRequest.content();
         if (byteBuf.hasArray()) {

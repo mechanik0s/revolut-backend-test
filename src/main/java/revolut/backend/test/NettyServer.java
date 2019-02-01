@@ -91,7 +91,7 @@ public class NettyServer {
         }
     }
 
-    @Sharable // reduce unnecessary handlers objects if they have not shared
+    @Sharable // reduce unnecessary handlers objects if they weren't shared
     public class RouterHandler extends SimpleChannelInboundHandler<Object> {
 
         @Override

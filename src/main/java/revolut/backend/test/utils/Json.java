@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 /**
- * utility classes are bad for OOP, but useful in some case
+ * Utility classes are bad for OOP, but useful in some cases
  */
 public class Json {
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -19,7 +19,7 @@ public class Json {
         mapper.enable(DeserializationFeature.FAIL_ON_NULL_CREATOR_PROPERTIES);
     }
 
-    // prevent accidentally instantiation and inheritance
+    // prevent accidental instantiation and inheritance
     private Json() {
     }
 

@@ -10,12 +10,12 @@ import revolut.backend.test.response.BaseResponse;
 
 
 /**
- * utility classes are bad for OOP, but useful in some case
+ * Utility classes are bad for OOP, but useful in some cases
  */
 public class HttpUtils {
 
 
-    // prevent accidentally instantiation and inheritance
+    // prevent accidental instantiation and inheritance
     private HttpUtils() {
     }
 
