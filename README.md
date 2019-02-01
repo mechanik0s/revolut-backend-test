@@ -17,3 +17,31 @@ a pre-installed container/server).
 Implicit requirements:
 1. The code produced by you is expected to be of high quality.
 2. There are no detailed requirements, use common sense.
+
+## Technology stack
+I usualy use vert.x stack and other open-source solutions(e.g. swagger for documentation), but considering requirement #4 I tried to implement the task using a minimum of dependencies.
+I assume that purpose of the task is to demonsrate core knowledge and skills(e.g. concurrency), therefore I used these technologies:
+* Java 8
+* Netty
+* Jackson
+* Maven
+* TestNG + REST-assured for tests.
+
+## Assumtions
+Solution may contain some assumptions which are not crucial in test task, but are important in production-ready solutions
+* No OpenAPI specification
+* No support of path-params
+* Low unit-test coverage
+* No config
+* Poor logs
+* No DI
+
+and some others.
+
+## Project building
+`mvn clean package`
+
+## Project running
+`java -jar backend-test-1.0-SNAPSHOT-uber.jar`
+will run server on `localhost:8080`
+
