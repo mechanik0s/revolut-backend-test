@@ -7,6 +7,7 @@ import revolut.backend.test.routes.impl.RouterImpl;
 /**
  * just test server starting and shutdown correctness
  */
+@Test(groups = "lifecycle")
 public class NettyServerLifecycleTest {
 
     private NettyServer nettyServer;

@@ -22,13 +22,14 @@ import static io.restassured.RestAssured.with;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+@Test(dependsOnGroups = "lifecycle")
 public class APITest {
 
-    public static final long FIRST_TRANSACTION_AMOUNT = 10L;
-    private static final Long FIRST_ACC_ID = 1L;
-    private static final Long SECOND_ACC_ID = 2L;
-    private static final Long FIRST_ACC_INIT_BALANCE = 100L;
-    private static final Long SECOND_ACC_INIT_BALANCE = 50L;
+    private static final long FIRST_TRANSACTION_AMOUNT = 10L;
+    private static final long FIRST_ACC_ID = 1L;
+    private static final long SECOND_ACC_ID = 2L;
+    private static final long FIRST_ACC_INIT_BALANCE = 100L;
+    private static final long SECOND_ACC_INIT_BALANCE = 50L;
     private static final String CODE = "code";
 
     @BeforeClass
@@ -115,7 +116,7 @@ public class APITest {
 
     }
 
-    private Long getAccBalance(Long accountId) {
+    private long getAccBalance(long accountId) {
         return with().param("accountId", accountId)
                 .get(EndPoints.accounts).then()
                 .statusCode(HttpResponseStatus.OK.code())
@@ -132,22 +133,22 @@ public class APITest {
                 .post(EndPoints.transfer).then()
                 .statusCode(HttpResponseStatus.OK.code())
                 .body(CODE, equalTo(APIResponseCode.OK.getCode()));
-        Long firstExpBalance = FIRST_ACC_INIT_BALANCE - FIRST_TRANSACTION_AMOUNT;
-        Long secondExpBalance = SECOND_ACC_INIT_BALANCE + FIRST_TRANSACTION_AMOUNT;
+        long firstExpBalance = FIRST_ACC_INIT_BALANCE - FIRST_TRANSACTION_AMOUNT;
+        long secondExpBalance = SECOND_ACC_INIT_BALANCE + FIRST_TRANSACTION_AMOUNT;
         assertEquals(getAccBalance(FIRST_ACC_ID), firstExpBalance);
         assertEquals(getAccBalance(SECOND_ACC_ID), secondExpBalance);
     }
 
     @Test(dependsOnMethods = "whenTransferSuccessful")
     public void whenInsufficientFunds() {
-        Long amount = 1000L;
+        long amount = 1000L;
         TransferRequest transferRequest = new TransferRequest(FIRST_ACC_ID, SECOND_ACC_ID, amount);
         with().body(transferRequest)
                 .post(EndPoints.transfer).then()
                 .statusCode(HttpResponseStatus.BAD_REQUEST.code())
                 .body(CODE, equalTo(APIResponseCode.INSUFFICIENT_FUNDS.getCode()));
-        Long firstExpBalance = FIRST_ACC_INIT_BALANCE - FIRST_TRANSACTION_AMOUNT;
-        Long secondExpBalance = SECOND_ACC_INIT_BALANCE + FIRST_TRANSACTION_AMOUNT;
+        long firstExpBalance = FIRST_ACC_INIT_BALANCE - FIRST_TRANSACTION_AMOUNT;
+        long secondExpBalance = SECOND_ACC_INIT_BALANCE + FIRST_TRANSACTION_AMOUNT;
         assertEquals(getAccBalance(FIRST_ACC_ID), firstExpBalance);
         assertEquals(getAccBalance(SECOND_ACC_ID), secondExpBalance);
     }

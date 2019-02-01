@@ -7,10 +7,10 @@ import revolut.backend.test.exceptions.InsufficientFundsException;
 import revolut.backend.test.exceptions.TransactionErrorException;
 
 public class AccountImpl implements Account {
-    private final Long accountId;
+    private final long accountId;
     private final String accountName;
-    private Long balance;
-    private Long uncommittedBalance = 0L;
+    private long balance;
+    private long uncommittedBalance = 0L;
     private TransactionIdentifier currentTransaction = null;
 
 
@@ -31,7 +31,7 @@ public class AccountImpl implements Account {
     }
 
     @Override
-    public Long accountId() {
+    public long accountId() {
         return accountId;
     }
 

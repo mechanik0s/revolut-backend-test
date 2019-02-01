@@ -10,7 +10,7 @@ import revolut.backend.test.exceptions.TransactionErrorException;
 @JsonDeserialize(as = AccountImpl.class)
 public interface Account extends Transactional {
     @JsonProperty
-    Long accountId();
+    long accountId();
 
     //just for convenience sake
     @JsonProperty
